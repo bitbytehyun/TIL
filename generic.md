@@ -18,7 +18,7 @@ String s = list.get(0); // 형변환 없이 안전하게 사용 가능
 ```
 
 자바는 하위 호환성을 유지하기 위해, 제네릭 타입 정보를 컴파일 타임에만 사용하고, **런타임에는 제거**합니다.  
-즉, `List<string>`과 `List<Integer>`는 컴파일 후에는 동일한 클래스로 취급된디ㅏ. 
+즉, `List<string>`과 `List<Integer>`는 컴파일 후에는 동일한 클래스로 취급됩니다. 
 ```java
 public class Box<T> {
   private T data;
@@ -58,7 +58,7 @@ public class Pair<K, V> {
   private V value;
 }
 ```
-또한, 유연한 타입 사용을 위해 **와일드카드 `?`를 지원합니다. 이는 API의 입출력 타입을 느슨하게 제한할 때 유용하며, PECS 원칙에 따라 다음과 같이 사용합니다. 
+또한, 유연한 타입 사용을 위해 **와일드카드 '`?`'**를 지원합니다. 이는 API의 입출력 타입을 느슨하게 제한할 때 유용하며, PECS 원칙에 따라 다음과 같은 키워드를 사용할 수 있습니다. 
 * Producer = `extends` (읽기 전용)
 * Consumer = `super` (쓰기 전용)
 ```java
