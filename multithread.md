@@ -25,12 +25,35 @@ public class MyRunnable implements Runnable {
 }
 // new Thread(new MyRunnable().start())
 ```
-하지만 수동으로 처리하기 떄문에, 쓰레드 요청이 많아지면 리소스도 낭비되고 흐름을 제어하기 어려워집니다.
-
+하지만 쓰레드를 직접 생성하는 방식은 문제점이 있습니다.
+* 쓰레드는 생성마다 메모리 스택 공간을 필요로 함
+* 지나치게 많은 쓰레드가 생성되면 콘텍스트 스위칭 비용이 증가
 ---
 
 ### 2단계: `Executor`와 `Future`
-자바 5에서는 `java.util.concurrent` 패키지를 통해 스레드 풀 관리가 가능한 `ExecutorService`가 등장하여 스레드 수를 제한하고 관리할 수 있는 쓰레드 풀이 등장했습니다.
+자바 5에서는 `java.util.concurrent` 패키지를 통해 `ExecutorService`가 등장하여 스레드 수를 제한하고 관리할 수 있는 쓰레드 풀이 등장했습니다.
+쓰레드 풀의 종류는 다음과 같습니다.
+* `newFixedThreadPool(n)`: 고정된 개수의 쓰레드를 유지
+* `newCachedThreadPool()`: 필요에 따라 쓰레드를 생성하고, 유후 쓰레드는 재사용
+* `newSingleThreadExecutor()`: 하나의 쓰레드만 유지하여, 순차적으로 작업 처리
+* `newScheduledThreadPool(n)`: 예약 또는 주기적인 작업 처리에 사용
+
+```java
+ExecutorService executor = Executors.newFixedThreadPool(3);
+
+for (int i = 0; i < 5; i++) {
+  executor.execute(() -> {
+    System.out.println("작업 " + taskId + " 시작: " + Thread.currentThread().getName());
+  });
+}
+
+// 결과
+// 작업 3 시작: pool-1-thread-3
+// 작업 2 시작: pool-1-thread-2
+// 작업 1 시작: pool-1-thread-1
+// 작업 4 시작: pool-1-thread-2
+```
+
 또한, 비동기 결과 처리를 위한 `Future`를 도입했습니다.
 ```java
 ExecutorService executor = Executors.newFixedThreadPool(2);
