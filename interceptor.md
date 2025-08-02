@@ -46,3 +46,13 @@ public class WebConfig implements WebMvcConfigurer {
 | 등록 위치 | 서블릿 컨테이너 필터 체인 또는 스프링 시큐리티 설정       | `WebMvcConfigurer`에서 등록            |
 | 처리 범위 | 모든 HTTP 요청 (웹, API 등)               | 스프링 MVC가 처리하는 컨트롤러 요청에 한정          |
 | 상태 관리 | 스레드 안전하게 설계해야 함                     | 요청 단위, 컨트롤러 라이프사이클에 맞춤             |
+
+
+### filter, interceptor, aop 차이
+| 구분    | Filter                          | Interceptor                      | AOP                         |
+| ----- | ------------------------------- | -------------------------------- | --------------------------- |
+| 실행 시점 | 서블릿 컨테이너, DispatcherServlet 이전  | DispatcherServlet 이후, 컨트롤러 호출 전후 | 메서드 실행 시점 (주로 서비스/비즈니스 로직)  |
+| 적용 범위 | 모든 HTTP 요청                      | 특정 컨트롤러 요청                       | 모든 자바 메서드 호출                |
+| 구현 방법 | `javax.servlet.Filter` 인터페이스 구현 | `HandlerInterceptor` 구현          | `@Aspect` 어노테이션 + Advice 구현 |
+| 주요 용도 | 인증, 인코딩, 로깅, 요청/응답 조작           | 인증, 권한 체크, 요청 흐름 제어              | 로깅, 트랜잭션, 보안, 성능 모니터링 등     |
+| 관리 주체 | 서블릿 컨테이너                        | Spring MVC                       | Spring AOP (프록시 기반)         |
