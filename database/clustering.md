@@ -14,5 +14,9 @@
 **Shared Nothing**
 * 각 서버가 독립된 디스크를 가집니다.
 * 예: Mysql Cluster (NDB)
-** Shared Disk**
-모든 서버가 동일한 스토리지를 공유합니다. 
+
+
+**Shared Disk**
+* 모든 서버가 동일한 스토리지를 공유합니다.
+* 예: 금융 DB
+* ➡️ PC + EC
