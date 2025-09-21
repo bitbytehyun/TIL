@@ -13,7 +13,7 @@
 
 방어 방법으로는 다음 방법들이 있습니다. 
 ### 1. X-Frame-Options 헤더
-페이지를 iframe 안에 표시 못하도록 제한합니다. 
+HTTP 응답 헤더로 iframe 삽입을 차단합니다. 
 ```http
 X-Frame-Options: DENY          # 어떤 사이트에서도 iframe 불가
 X-Frame-Options: SAMEORIGIN    # 같은 도메인만 허용
