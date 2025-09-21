@@ -1,12 +1,18 @@
 # DDoS
-DDoS란, 분산 서비스 거부 공격으로, 여러 대의 컴퓨터를 이용해 특정 서버나 네트워크에 대량으 ㅣ트래픽을 몰아넣어 정상적인 서비스가 불가능하게 만드는 공격입니다. 
-1. 공격자는 악성 코드에 감염된 PC, OiT기기를 모읍니다.
+DDoS란, 분산 서비스 거부 공격으로, 여러 대의 컴퓨터를 이용해 특정 서버나 네트워크에 대량의 트래픽을 몰아넣어 정상적인 서비스가 불가능하게 만드는 공격입니다. 
+1. 공격자는 악성 코드에 감염된 PC, IoT 기기를 모읍니다.
 2. 명령 제어 서버에서 특정 목표 서버를 지정합니다.
 3. 수천-수만 대의 좀비 PC가 동시에 트래픽을 전송합니다.
 4. 서버/네트워크 자원이 소진되어, 정상 사용자 요청이 처리 불가합니다.
 
+### 탐지 방법
+* 비정상적인 트래픽 급증
+* 특정 앤드포인트로 비정상적인 요청이 집중
+* 정상 사용자와 다른 User-Agent 또는 지리적 패턴
+
 
 방어 방법으로는 다음이 있습니다. 
+
 ### 1. 네트워크 레벨
 * 방화벽, IDS/IPS에서 비정상 트래픽 필터링을 합니다.
 * UDP/ICMP Rate Limit
@@ -22,3 +28,29 @@ DDoS란, 분산 서비스 거부 공격으로, 여러 대의 컴퓨터를 이용
 
 ### 4. 전문 서비스 활용
 * AWS Shield, Cloudflare DDoSProtection, Google Cloud Armor 등
+
+### nginx에서 할 수 있는 것
+1. 요청 초당 제한 (rate limiting)
+```bash
+http {
+  limit_req_zone $binary_remote_addr zone=one:10m rate=10r/s;
+  server {
+    location /api/ {
+      limit_req zone=one burst=20 nodelay;
+      proxy_pass http://backend;
+    }
+  }
+}
+```
+2. 동시 연결 제한
+```
+http {
+  limit_conn_zone $binary_remote_addr zone=addr:10m;
+  server {
+    limit_conn addr 10;
+  }
+}
+```
+
+### tomcat에서 할 수 있는 것
+* thread pool의 최소/최대, connection timeout, maxConnections, acceptCount 조정으로 과도한 동시 연결이 스레드를 전부 먹지 않도록 제한합니다. 
